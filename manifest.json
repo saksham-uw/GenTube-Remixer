@@ -1,0 +1,22 @@
+{
+    "manifest_version": 3,
+    "name": "GenTube Remixer",
+    "version": "0.1.0",
+    "description": "Right-click any image → Remix in GenTube (MVP demo).",
+    "permissions": ["contextMenus", "activeTab", "scripting", "downloads", "storage"],
+    "host_permissions": ["<all_urls>"],
+    "background": {
+      "service_worker": "background.js",
+      "type": "module"
+    },
+    "action": {
+      "default_title": "GenTube Remixer"
+    },
+    "web_accessible_resources": [
+      {
+        "resources": ["remix.html", "remix.js", "styles.css"],
+        "matches": ["<all_urls>"]
+      }
+    ]
+  }
+  
