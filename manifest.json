@@ -1,22 +1,53 @@
 {
-    "manifest_version": 3,
-    "name": "GenTube Remixer",
-    "version": "0.1.0",
-    "description": "Right-click any image → Remix in GenTube (MVP demo).",
-    "permissions": ["contextMenus", "activeTab", "scripting", "downloads", "storage"],
-    "host_permissions": ["<all_urls>"],
-    "background": {
-      "service_worker": "background.js",
-      "type": "module"
-    },
-    "action": {
-      "default_title": "GenTube Remixer"
-    },
-    "web_accessible_resources": [
-      {
-        "resources": ["remix.html", "remix.js", "styles.css"],
-        "matches": ["<all_urls>"]
-      }
-    ]
-  }
-  
+  "manifest_version": 3,
+  "name": "GenTube Remixer",
+  "version": "0.1.2",
+  "description": "Right-click any image → Remix in GenTube",
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "scripting",
+    "downloads",
+    "storage"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "background.js", "type": "module" },
+
+  "action": {
+    "default_title": "GenTube Remixer",
+    "default_icon": {
+      "16": "icons/gentube-16.png",
+      "32": "icons/gentube-32.png",
+      "48": "icons/gentube-48.png",
+      "128": "icons/gentube-128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/gentube-16.png",
+    "32": "icons/gentube-32.png",
+    "48": "icons/gentube-48.png",
+    "128": "icons/gentube-128.png",
+    "256": "icons/gentube-256.png",
+    "512": "icons/gentube-512.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "remix.html",
+        "remix.js",
+        "styles.css",
+        "welcome.html",
+        "gentube.svg"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

@@ -8,114 +8,102 @@ async function showToast(tabId, message, duration = 2000) {
     await chrome.scripting.executeScript({
       target: { tabId },
       func: (msg, duration) => {
-        // Remove any existing toast
-        const existingToast = document.getElementById('gentube-remix-toast');
+        const existingToast = document.getElementById("gentube-remix-toast");
         if (existingToast) existingToast.remove();
 
-        const toast = document.createElement('div');
-        toast.id = 'gentube-remix-toast';
+        const toast = document.createElement("div");
+        toast.id = "gentube-remix-toast";
         toast.textContent = msg;
         Object.assign(toast.style, {
-          position: 'fixed',
-          bottom: '16px',
-          right: '16px',
-          background: 'rgba(0,0,0,0.85)',
-          color: '#fff',
-          padding: '12px 24px',
-          borderRadius: '8px',
-          fontSize: '14px',
-          fontWeight: '500',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-          zIndex: '999999',
-          transform: 'translateY(20px)',
-          opacity: '0',
-          transition: 'all 0.3s ease-out',
-          maxWidth: '300px',
-          textAlign: 'center',
-        });
-        
-        document.body.appendChild(toast);
-        
-        // Trigger animation
-        requestAnimationFrame(() => {
-          toast.style.transform = 'translateY(0)';
-          toast.style.opacity = '1';
+          position: "fixed",
+          bottom: "16px",
+          right: "16px",
+          background: "rgba(0,0,0,0.85)",
+          color: "#fff",
+          padding: "12px 24px",
+          borderRadius: "8px",
+          fontSize: "14px",
+          fontWeight: "500",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+          zIndex: "999999",
+          transform: "translateY(20px)",
+          opacity: "0",
+          transition: "all 0.3s ease-out",
+          maxWidth: "300px",
+          textAlign: "center",
         });
 
-        // Auto-remove after duration
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => {
+          toast.style.transform = "translateY(0)";
+          toast.style.opacity = "1";
+        });
+
         setTimeout(() => {
-          toast.style.transform = 'translateY(20px)';
-          toast.style.opacity = '0';
+          toast.style.transform = "translateY(20px)";
+          toast.style.opacity = "0";
           setTimeout(() => toast.remove(), 300);
         }, duration);
       },
       args: [message, duration],
     });
   } catch (error) {
-    console.error('Failed to show toast:', error);
+    console.error("Failed to show toast:", error);
   }
+}
+
+function openRemixPage(imageUrl) {
+  const pageUrl =
+    chrome.runtime.getURL("remix.html") +
+    `?imageUrl=${encodeURIComponent(imageUrl)}`;
+  return chrome.tabs.create({ url: pageUrl, active: true });
 }
 
 // Install/Update handler
 chrome.runtime.onInstalled.addListener(({ reason }) => {
   // Create context menu item
   chrome.contextMenus.create({
-    id: 'remix-image',
-    title: 'Remix in GenTube',
-    contexts: ['image'],
+    id: "remix-image",
+    title: "Remix in GenTube",
+    contexts: ["image"],
   });
-  
-  // Show welcome message
-  if (reason === 'install') {
-    chrome.tabs.create({
-      url: chrome.runtime.getURL('welcome.html')
-    });
+
+  // Show welcome page on install
+  if (reason === "install") {
+    chrome.tabs.create({ url: chrome.runtime.getURL("welcome.html") });
   }
 });
 
 // Context menu click handler
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
-  if (info.menuItemId !== 'remix-image' || !info.srcUrl) return;
-  
-  // Show loading state
-  await showToast(tab.id, ' Launching GenTube Remixer...', 1500);
-  
-  const pageUrl = chrome.runtime.getURL('remix.html') +
-    `?imageUrl=${encodeURIComponent(info.srcUrl)}`;
-  
+  if (info.menuItemId !== "remix-image" || !info.srcUrl) return;
+  await showToast(tab.id, " Launching GenTube Remixer...", 1500);
   try {
-    // Open the remix page in a new tab
-    const remixTab = await chrome.tabs.create({ 
-      url: pageUrl,
-      active: true 
-    });
-    
-    // Optional: Focus the window if needed
-    if (remixTab.windowId) {
+    const remixTab = await openRemixPage(info.srcUrl);
+    if (remixTab.windowId)
       await chrome.windows.update(remixTab.windowId, { focused: true });
-    }
   } catch (error) {
-    console.error('Failed to open remix page:', error);
-    await showToast(tab.id, ' Failed to open GenTube Remixer', 3000);
+    console.error("Failed to open remix page:", error);
+    if (tab?.id)
+      await showToast(tab.id, " Failed to open GenTube Remixer", 3000);
   }
 });
 
-// Handle messages from the popup/remix page
+// Handle messages from content/remix pages
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === 'downloadImage') {
-    // Handle image downloads
+  if (message.action === "downloadImage") {
     chrome.downloads.download({
       url: message.url,
       filename: `gentube-remix-${Date.now()}.jpg`,
-      saveAs: true
+      saveAs: true,
     });
-  } else if (message.action === 'shareImage') {
-    // Handle sharing (could be extended with Web Share API)
+  } else if (message.action === "shareImage") {
     navigator.clipboard.writeText(message.url).then(() => {
-      if (sender.tab && sender.tab.id) {
-        showToast(sender.tab.id, ' Image URL copied to clipboard!');
-      }
+      if (sender.tab?.id)
+        showToast(sender.tab.id, " Image URL copied to clipboard!");
     });
+  } else if (message.action === "openRemix" && message.imageUrl) {
+    openRemixPage(message.imageUrl);
   }
-  return true; // Keep the message channel open for async response
+  return true;
 });

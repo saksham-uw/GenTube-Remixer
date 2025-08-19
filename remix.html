@@ -1,151 +1,278 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>GenTube Remix</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css"/>
-</head>
-<body>
-  <div class="app-container">
-    <header class="app-header">
-      <div class="logo">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
-          <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <h1>GenTube Remix</h1>
-      </div>
-      <div class="header-actions">
-        <button id="helpBtn" class="icon-button" aria-label="Help">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M9.09 9.00002C9.3251 8.33169 9.78915 7.76813 10.4 7.40915C11.0108 7.05018 11.7289 6.91894 12.4272 7.03873C13.1255 7.15851 13.7588 7.52154 14.2151 8.06355C14.6713 8.60555 14.9211 9.29154 14.92 10C14.92 12 11.92 13 11.92 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 17H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </header>
-
-    <main class="remix-container">
-      <div class="image-panel">
-        <div class="image-container">
-          <div class="image-wrapper">
-            <img id="inputImg" alt="Original" class="original-image"/>
-            <div class="image-overlay">
-              <span>Original</span>
-            </div>
-          </div>
-          <div class="image-meta" id="imgMeta"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>GenTube Remix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="app-header">
+        <div class="logo">
+          <img src="gentube.svg" alt="GenTube" width="48" height="48" />
+          <h1>GenTube Remixer</h1>
         </div>
-
-        <div class="divider">
-          <div class="divider-line"></div>
-          <div class="divider-arrow">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="divider-line"></div>
-        </div>
-
-        <div class="image-container">
-          <div class="image-wrapper">
-            <div id="loadingOverlay" class="loading-overlay">
-              <div class="spinner"></div>
-              <p>Remixing your image...</p>
-            </div>
-            <img id="previewImg" alt="Remix preview" class="remix-image"/>
-            <div class="image-overlay">
-              <span>Remix</span>
-              <div id="styleTag" class="style-tag">None</div>
-            </div>
-          </div>
-          <div class="image-actions">
-            <button id="download" class="action-button" title="Download">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <span>Download</span>
-            </button>
-            <button id="share" class="action-button" title="Share">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 8C19.6569 8 21 6.65685 21 5C21 3.34315 19.6569 2 18 2C16.3431 2 15 3.34315 15 5C15 6.65685 16.3431 8 18 8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M6 15C7.65685 15 9 13.6569 9 12C9 10.3431 7.65685 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M18 22C19.6569 22 21 20.6569 21 19C21 17.3431 19.6569 16 18 16C16.3431 16 15 17.3431 15 19C15 20.6569 16.3431 22 18 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8.59 13.51L15.42 17.49" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M15.41 6.51L8.59 10.49" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <span>Share</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div class="controls-panel">
-        <div class="control-group">
-          <h3>Style Presets</h3>
-          <div id="styles" class="style-presets"></div>
-        </div>
-
-        <div class="control-group">
-          <div class="slider-container">
-            <label for="intensity" class="slider-label">
-              <span>Intensity</span>
-              <span id="intensityValue">60%</span>
-            </label>
-            <input id="intensity" type="range" min="0" max="100" value="60" class="slider"/>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <button id="generate" class="generate-button">
-            <span>Generate Remix</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C14.6522 2 17.1957 3.05357 19.0711 4.92893" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <div class="header-actions">
+          <button id="helpBtn" class="icon-button" aria-label="Help">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M9.09 9.00002C9.3251 8.33169 9.78915 7.76813 10.4 7.40915C11.0108 7.05018 11.7289 6.91894 12.4272 7.03873C13.1255 7.15851 13.7588 7.52154 14.2151 8.06355C14.6713 8.60555 14.9211 9.29154 14.92 10C14.92 12 11.92 13 11.92 13"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M12 17H12.01"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
         </div>
+      </header>
 
-        <div id="status" class="status-message"></div>
-      </div>
-    </main>
-  </div>
+      <main class="remix-container">
+        <div class="image-panel">
+          <div class="image-container">
+            <div class="image-wrapper">
+              <img id="inputImg" alt="Original" class="original-image" />
+              <div class="image-overlay">
+                <span>Original</span>
+              </div>
+            </div>
+            <div class="image-meta" id="imgMeta"></div>
+          </div>
 
-  <div id="helpModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>How to Use GenTube Remix</h2>
-        <button class="close-button">&times;</button>
-      </div>
-      <div class="modal-body">
-        <h3>Getting Started</h3>
-        <p>Right-click any image on the web and select <strong>Remix in GenTube</strong> to get started.</p>
-        
-        <h3>Features</h3>
-        <ul>
-          <li>Choose from various style presets to transform your image</li>
-          <li>Adjust the intensity of the effect using the slider</li>
-          <li>Download your remixed image or share it with others</li>
-        </ul>
-        
-        <h3>Tips</h3>
-        <ul>
-          <li>Higher intensity values create more dramatic transformations</li>
-          <li>Different styles work better with different types of images</li>
-          <li>Try combining styles by applying them sequentially</li>
-        </ul>
+          <div class="divider">
+            <div class="divider-line"></div>
+            <div class="divider-arrow">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5 12H19M19 12L12 5M19 12L12 19"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="divider-line"></div>
+          </div>
+
+          <div class="image-container">
+            <div class="image-wrapper">
+              <div id="loadingOverlay" class="loading-overlay">
+                <div class="spinner"></div>
+                <p>Remixing your image...</p>
+              </div>
+              <img id="previewImg" alt="Remix preview" class="remix-image" />
+              <div class="image-overlay">
+                <span>Remix</span>
+                <div id="styleTag" class="style-tag">None</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls-panel">
+          <div class="control-group">
+            <h3>Style Presets</h3>
+            <div id="styles" class="style-presets"></div>
+          </div>
+
+          <div class="control-group">
+            <div class="slider-container">
+              <label for="intensity" class="slider-label">
+                <span>Intensity</span>
+                <span id="intensityValue">60%</span>
+              </label>
+              <input
+                id="intensity"
+                type="range"
+                min="0"
+                max="100"
+                value="60"
+                class="slider"
+              />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <button id="generate" class="generate-button">
+              <span>Generate Remix</span>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C14.6522 2 17.1957 3.05357 19.0711 4.92893"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M22 4L12 14.01L9 11.01"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div class="control-group">
+            <div class="image-actions">
+              <button id="download" class="action-button" title="Download">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M7 10L12 15L17 10"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M12 15V3"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <span>Download</span>
+              </button>
+              <button id="share" class="action-button" title="Share">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M18 8C19.6569 8 21 6.65685 21 5C21 3.34315 19.6569 2 18 2C16.3431 2 15 3.34315 15 5C15 6.65685 16.3431 8 18 8Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M6 15C7.65685 15 9 13.6569 9 12C9 10.3431 7.65685 9 6 9C4.34315 9 3 10.3431 3 12C3 13.6569 4.34315 15 6 15Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M18 22C19.6569 22 21 20.6569 21 19C21 17.3431 19.6569 16 18 16C16.3431 16 15 17.3431 15 19C15 20.6569 16.3431 22 18 22Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8.59 13.51L15.42 17.49"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M15.41 6.51L8.59 10.49"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <span>Share</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="status" class="status-message"></div>
+        </div>
+      </main>
+    </div>
+
+    <div id="helpModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>How to Use GenTube Remix</h2>
+          <button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+          <h3>Getting Started</h3>
+          <p>
+            Right-click any image on the web and select
+            <strong>Remix in GenTube</strong> to get started.
+          </p>
+
+          <h3>Features</h3>
+          <ul>
+            <li>Choose from various style presets to transform your image</li>
+            <li>Adjust the intensity of the effect using the slider</li>
+            <li>Download your remixed image or share it with others</li>
+          </ul>
+
+          <h3>Tips</h3>
+          <ul>
+            <li>
+              Higher intensity values create more dramatic transformations
+            </li>
+            <li>Different styles work better with different types of images</li>
+            <li>Try combining styles by applying them sequentially</li>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script src="remix.js" type="module"></script>
-</body>
+    <script src="remix.js" type="module"></script>
+  </body>
 </html>

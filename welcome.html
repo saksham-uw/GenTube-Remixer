@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Welcome to GenTube Remixer</title>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    .welcome {
+      max-width: 760px; margin: 3rem auto; padding: 2rem;
+      background: var(--bg-elevated); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow);
+    }
+    .welcome h1 { margin-bottom: .5rem; }
+    .welcome p { color: var(--text-light); margin: .25rem 0 1rem; }
+    .welcome .actions { display: flex; gap: .75rem; margin-top: 1rem; }
+    .welcome .actions a, .welcome .actions button {
+      text-decoration: none;
+      padding: .75rem 1.25rem; border-radius: var(--radius);
+      border: 1px solid var(--border); background: var(--bg-elevated);
+    }
+    .welcome .primary {
+      background: var(--primary); color: #fff; border-color: transparent;
+    }
+  </style>
+</head>
+<body>
+  <div class="welcome">
+    <img src="gentube.svg" alt="GenTube" width="48" height="48" style="margin-bottom:1rem" />
+    <h1>GenTube Remixer</h1>
+    <p>Right-click any image on the web and choose <strong>“Remix in GenTube”</strong>.</p>
+    <p>Or try a quick demo with a sample image:</p>
+    <div class="actions">
+      <a class="primary" href="remix.html?imageUrl=https%3A%2F%2Fimages.unsplash.com%2Fphoto-1503023345310-bd7c1de61c7d" target="_blank">Open Demo</a>
+      <a href="https://github.com/" target="_blank" rel="noreferrer">Docs (coming soon)</a>
+    </div>
+  </div>
+</body>
+</html>
